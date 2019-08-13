@@ -52,6 +52,8 @@ Which version of <this project> can you use with which version of Bazel?
 [No]: https://img.shields.io/static/v1.svg?label=&message=No&color=red
 ```
 
+For more options, `bazel_compatibility --help`
+
 ## Remote Invocation
 
 You can access the script remotely via *kscript*'s url facility, like so:
@@ -120,6 +122,4 @@ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ```
-
-For more options, `bazel_compatibility --help`
 
