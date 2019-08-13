@@ -1,3 +1,5 @@
+package com.geekinasuit.script.bazel_compatibility.utils
+
 import com.beust.jcommander.JCommander
 import java.util.concurrent.TimeUnit
 import java.io.File
@@ -26,7 +28,7 @@ fun ProcessBuilder.exec(timeout: Long = 30, unit: TimeUnit = TimeUnit.MINUTES): 
     this.start().also { it.waitFor(timeout, unit) }
 
 // padEnd with a default.
-fun String.pad(width: Int = VERSION_WIDTH) = this.padEnd(width)
+fun String.pad(width: Int) = this.padEnd(width)
 
 /** Returns the substring after the delimiter, or itself if the delelimiter is not found */
 fun String.after(delimiter: String) =
@@ -35,6 +37,14 @@ fun String.after(delimiter: String) =
         else this[0]
     }
 
-fun JCommander.parseWithLifecycle() {
-    this.parse()
+interface Lifecycle {
+    fun postParse()
+}
+
+fun JCommander.parseWithLifecycle(vararg args: String): JCommander {
+    this.parse(*args)
+    for (obj in this.objects) {
+        if (obj is Lifecycle) obj.postParse()
+    }
+    return this
 }

@@ -1,0 +1,27 @@
+#
+# This build file is not necessary to use bazel_compatibility.kts. It exists to allow for a rig
+# for compilation and testing of the .kt files used by the script.
+
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kt_jvm_library", "kt_jvm_binary", "kt_jvm_test")
+
+kt_jvm_library(
+    name = "utils",
+    srcs = ["bazel_compatibility_utils.kt"],
+    deps = [
+        "@maven//com/beust:jcommander",
+        "@maven//com/github/holgerbrandl:kscript_annotations",  # For the ide.
+        "@maven//org/jetbrains/kotlin:kotlin_script_runtime",  # For the ide.
+    ],
+)
+
+kt_jvm_test(
+    name = "BazelCompatibilityTest",
+    srcs = ["bazel_compatibility_utils_test.kt"],
+    test_class = "com.geekinasuit.script.bazel_compatibility.utils.BazelCompatibilityUtilsTest",
+    deps = [
+        ":utils",
+        "@maven//com/beust:jcommander",
+        "@maven//com/google/truth:truth",
+        "@maven//junit",
+    ],
+)

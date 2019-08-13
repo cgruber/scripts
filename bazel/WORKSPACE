@@ -1,0 +1,63 @@
+workspace(name = "bazel_scripts")
+
+load(":workspace_versions.bzl",
+    "KOTLINC_RELEASE",
+    "KOTLINC_VERSION",
+    "KOTLIN_RULES_VERSION",
+    "KOTLIN_RULES_SHA",
+    "MAVEN_REPOSITORY_RULES_VERSION",
+    "MAVEN_REPOSITORY_RULES_CHECKSUM",
+)
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# Set up maven
+http_archive(
+    name = "maven_repository_rules",
+    urls = ["https://github.com/square/bazel_maven_repository/archive/%s.zip" % MAVEN_REPOSITORY_RULES_VERSION],
+    type = "zip",
+    strip_prefix = "bazel_maven_repository-%s" % MAVEN_REPOSITORY_RULES_VERSION,
+    sha256 = MAVEN_REPOSITORY_RULES_CHECKSUM,
+)
+
+http_archive(
+    name = "io_bazel_rules_kotlin",
+    strip_prefix = "rules_kotlin-%s" % KOTLIN_RULES_VERSION,
+    type = "zip",
+    urls = ["https://github.com/cgruber/rules_kotlin/archive/%s.zip" % KOTLIN_RULES_VERSION],
+    sha256 = KOTLIN_RULES_SHA,
+)
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kotlin_repositories")
+kotlin_repositories(compiler_release = KOTLINC_RELEASE)
+register_toolchains(":kotlin_toolchain")
+
+load("@maven_repository_rules//maven:maven.bzl", "maven_repository_specification")
+maven_repository_specification(
+    name = "maven",
+    cache_poms_insecurely = True, # default False
+    repository_urls = [
+        "http://repo1.maven.org/maven2",
+        "http://jcenter.bintray.com/",
+    ],
+    artifacts = {
+        "com.beust:jcommander:1.71": {"insecure": True},
+        "com.github.holgerbrandl:kscript-annotations:1.2": {"insecure": True},
+        "com.google.truth:truth:1.0": {"insecure": True},
+        "junit:junit:4.13-beta-3": {"insecure": True},
+        "org.hamcrest:hamcrest-core:1.3": {"insecure": True},
+        "org.jetbrains.kotlin:kotlin-script-runtime:%s" % KOTLINC_VERSION: {"insecure": True},
+
+        # indirect dependencies from truth and guava.
+        "com.google.guava:guava:27.0.1-jre": {"insecure": True},
+        "org.checkerframework:checker-compat-qual:2.5.5": {"insecure": True},
+        "com.googlecode.java-diff-utils:diffutils:1.3.0": {"insecure": True},
+        "com.google.auto.value:auto-value-annotations:1.6.3": {"insecure": True},
+        "com.google.errorprone:error_prone_annotations:2.3.1": {"insecure": True},
+        "com.google.guava:failureaccess:1.0.1": {"insecure": True},
+        "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava": {"insecure": True},
+        "com.google.code.findbugs:jsr305:3.0.2": {"insecure": True},
+        "org.checkerframework:checker-qual:2.5.2": {"insecure": True},
+        "com.google.j2objc:j2objc-annotations:1.1": {"insecure": True},
+        "org.codehaus.mojo:animal-sniffer-annotations:1.17": {"insecure": True},
+    },
+)
