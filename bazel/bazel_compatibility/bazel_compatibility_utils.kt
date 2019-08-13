@@ -27,9 +27,6 @@ fun ProcessBuilder.withEnv(key: String, value: String): ProcessBuilder {
 fun ProcessBuilder.exec(timeout: Long = 30, unit: TimeUnit = TimeUnit.MINUTES): Process =
     this.start().also { it.waitFor(timeout, unit) }
 
-// padEnd with a default.
-fun String.pad(width: Int) = this.padEnd(width)
-
 /** Returns the substring after the delimiter, or itself if the delelimiter is not found */
 fun String.after(delimiter: String) =
     with(this.split(delimiter, limit = 2)) {

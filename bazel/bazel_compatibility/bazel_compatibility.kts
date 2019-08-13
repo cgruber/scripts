@@ -146,7 +146,7 @@ fun format(matrix: Map<String, VerifyResult>): String =
                 }
                 else -> ""
             }
-            "\n    | ${version.pad(VERSION_WIDTH)} | ${status.pad(6)} | $error |"
+            "\n    | ${version.padEnd(VERSION_WIDTH)} | ${status.padEnd(6)} | $error |"
         }
         .joinToString("")
 println("writing markdown to ${Args.outputFile}")
