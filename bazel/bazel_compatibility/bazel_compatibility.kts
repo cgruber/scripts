@@ -4,7 +4,7 @@
 
 // Load the utility classes.
 // For release, prefix with https://raw.githubusercontent.com/cgruber/scripts/<tag>/bazel/bazel_compatibility/
-@file:Include("https://raw.githubusercontent.com/cgruber/scripts/bazel_compatibility-1.1/bazel/bazel_compatibility/bazel_compatibility_utils.kt")
+@file:Include("bazel_compatibility_utils.kt")
 @file:DependsOn("com.beust:jcommander:1.74")
 
 package com.geekinasuit.script.bazel_compatibility
