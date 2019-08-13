@@ -23,22 +23,22 @@ object Args : Lifecycle {
     val DEFAULT_VERSIONS = listOf(
         "0.26.0", "0.26.1",
         "0.27.0", "0.27.1", "0.27.2",
-        "0.28.0", "0.28.1"
-        //"0.29.0" // soon
+        "0.28.0", "0.28.1",
+        "0.29.0"
     )
     @Parameter(names = ["--help"], help = true, description = "this option")
     var help = false
 
-    @Parameter(names = ["--clean"], description = "Clean command to execute")
+    @Parameter(names = ["-c", "--clean"], description = "Clean command to execute")
     var clean = "bazel --bazelrc=/dev/null clean --expunge"
 
-    @Parameter(names = ["-t", "--test_command"], description = "Test command to execute")
+    @Parameter(names = ["-t", "--test"], description = "Test command to execute")
     var test = "bazel --bazelrc=/dev/null test //..."
 
     @Parameter(names = ["-f", "--file"], description = "Markdown file with the results in a table")
     var outputFile: File = File("matrix.md")
 
-    @Parameter(names = ["-v", "--also"], description = "Versions to add to the built in ones")
+    @Parameter(names = ["-a", "--also"], description = "Versions to add to the built in ones")
     var also = listOf<String>()
 
     @Parameter(description = "<versions to test>")
@@ -143,17 +143,15 @@ println("writing markdown to ${Args.outputFile}")
 
 Args.outputFile.writeText(
     """
-    # Bazel Kotlin Rules compatibility
+    # Compatibility Matrix
     
-    Which version of *rules_kotlin* can you use with which version of Bazel (best
-    effort testing)?
+    Which version of <this project> can you use with which version of Bazel?
     
     | Compatibility | Current | Errors |
     | ---- | ----  | ---- |${format(matrix)}
     
     [Yes]: https://img.shields.io/static/v1.svg?label=&message=Yes&color=green
     [No]: https://img.shields.io/static/v1.svg?label=&message=No&color=red
-    [Unknown]: https://img.shields.io/static/v1.svg?label=&message=???&color=lightgrey
     
     """.trimIndent()
 )
