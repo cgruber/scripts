@@ -1,7 +1,10 @@
 #!/usr/bin/env kscript
 
 // Build the dagger example using different versions, via bazelisk.
-@file:Include("https://raw.githubusercontent.com/cgruber/scripts/1.0/bazel/bazel_compatibility/bazel_compatibility_utils.kt")
+
+// Load the utility classes.
+// For release, prefix with https://raw.githubusercontent.com/cgruber/scripts/<version>/bazel/bazel_compatibility/
+@file:Include("bazel_compatibility_utils.kt")
 @file:DependsOn("com.beust:jcommander:1.74")
 
 package com.geekinasuit.script.bazel_compatibility
