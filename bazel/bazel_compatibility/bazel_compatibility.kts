@@ -3,7 +3,7 @@
 // Build the dagger example using different versions, via bazelisk.
 
 @file:Include("bazel_compatibility_utils.kt")
-@file:DependsOn("com.beust:jcommander:1.71")
+@file:DependsOn("com.beust:jcommander:1.74")
 
 package com.geekinasuit.script.bazel_compatibility
 
@@ -11,6 +11,7 @@ import DependsOn
 import Include
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.Parameter
+import com.beust.jcommander.UnixStyleUsageFormatter
 import com.geekinasuit.script.bazel_compatibility.utils.*
 import java.io.File
 import kotlin.system.exitProcess
@@ -18,16 +19,6 @@ import kotlin.system.exitProcess
 /** Holds the CLI flags */
 object Args : Lifecycle {
     val DEFAULT_VERSIONS = listOf(
-        "0.16.0", "0.16.1",
-        "0.17.1", "0.17.2",
-        "0.18.0", "0.18.1",
-        "0.19.0", "0.19.1", "0.19.2",
-        "0.20.0",
-        "0.21.0",
-        "0.22.0",
-        "0.23.0", "0.23.1", "0.23.2",
-        "0.24.0", "0.24.1",
-        "0.25.0", "0.25.1", "0.25.2", "0.25.3",
         "0.26.0", "0.26.1",
         "0.27.0", "0.27.1", "0.27.2",
         "0.28.0", "0.28.1"
@@ -59,16 +50,13 @@ object Args : Lifecycle {
 val commander = JCommander
     .newBuilder()
     .addObject(Args)
-    .programName("test_versions")
+    .programName("bazel_compatibility")
     .build()
+    .also { it.setUsageFormatter(UnixStyleUsageFormatter(it)) }
     .parseWithLifecycle(*args)
 if (Args.help) {
     commander.usage()
-    println("""
-    |    <versions to test>
-    |      A set of versions to test.
-    |      Default: ${Args.DEFAULT_VERSIONS}
-    |""".trimMargin("|"))
+    println("    <versions to test> A set of versions to test. (default: ${Args.DEFAULT_VERSIONS})")
     exitProcess(0)
 }
 Args.postParse()

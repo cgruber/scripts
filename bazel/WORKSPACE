@@ -40,7 +40,7 @@ maven_repository_specification(
         "http://jcenter.bintray.com/",
     ],
     artifacts = {
-        "com.beust:jcommander:1.71": {"insecure": True},
+        "com.beust:jcommander:1.74": {"insecure": True},
         "com.github.holgerbrandl:kscript-annotations:1.2": {"insecure": True},
         "com.google.truth:truth:1.0": {"insecure": True},
         "junit:junit:4.13-beta-3": {"insecure": True},
