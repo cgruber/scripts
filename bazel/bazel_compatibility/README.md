@@ -1,7 +1,7 @@
 # Bazel compatibility check.
 
 [![Build status](https://badge.buildkite.com/391db500d347b6f1b1f5739d462e7e9f0375e4de151fa51ea0.svg)](https://buildkite.com/christian-gruber-open-source-stuffs/scripts)
-![Release Version](https://img.shields.io/badge/release-1.1-blue?style=flat)
+[![Release Version](https://img.shields.io/badge/release-1.1-blue?style=flat)](https://github.com/cgruber/scripts/releases/tag/bazel_compatibility-1.1)
 
 
 A script that stages invocations of bazelisk and a target to create
