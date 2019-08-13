@@ -1,5 +1,9 @@
 # Bazel compatibility check.
 
+[![Build status](https://badge.buildkite.com/391db500d347b6f1b1f5739d462e7e9f0375e4de151fa51ea0.svg)](https://buildkite.com/christian-gruber-open-source-stuffs/scripts)
+![https://img.shields.io/badge/release-1.1-blue?style=flat]
+
+
 A script that stages invocations of bazelisk and a target to create
 a compatability matrix for a project with aa bazel target. This is
 mainly useful for projects such as Starlark libraries or bazel rules.
@@ -52,7 +56,7 @@ Which version of <this project> can you use with which version of Bazel?
 
 You can access the script remotely via *kscript*'s url facility, like so:
 ```
-kscript https://raw.githubusercontent.com/cgruber/scripts/1.0/bazel/bazel_compatibility/bazel_compatibility.kts <parameters>
+kscript https://raw.githubusercontent.com/cgruber/scripts/bazel_compatibility-1.1/bazel/bazel_compatibility/bazel_compatibility.kts <parameters>
 ```
 
 Per the *kscript* documentation, you can set an alias in your shell to
