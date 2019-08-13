@@ -1,0 +1,9 @@
+load(":workspace_versions.bzl", "JAVA_LANGUAGE_LEVEL", "KOTLIN_LANGUAGE_LEVEL")
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "define_kt_toolchain")
+
+define_kt_toolchain(
+    name = "kotlin_toolchain",
+    api_version = KOTLIN_LANGUAGE_LEVEL,
+    jvm_target = JAVA_LANGUAGE_LEVEL,
+    language_version = KOTLIN_LANGUAGE_LEVEL,
+)
