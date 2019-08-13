@@ -18,6 +18,10 @@ mainly useful for projects such as Starlark libraries or bazel rules.
       path (as homebrew does).  If it is not, please adjust the clean
       and test commands using `-t` and `--clean` options, or symlink
       it.
+  * Java (Tested with 1.8 and Java 11)
+
+> Note: kscript/kotlin only required if executing as a script. If the binary
+> distribution is used, then only a JVM/JRE is required (along with bazelisk)
 
 ## Usage
 ```
