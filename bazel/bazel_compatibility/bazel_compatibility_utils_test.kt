@@ -19,9 +19,14 @@ class BazelCompatibilityUtilsTest {
         }
     }
 
-    @Test fun doTest() {
+    @Test fun testParseWithLifecycle() {
         assertThat(TestArgs.didTheThing.get()).isFalse()
         JCommander.newBuilder().addObject(TestArgs).build().parseWithLifecycle()
         assertThat(TestArgs.didTheThing.get()).isTrue()
+    }
+
+    @Test fun testFoo() {
+        assertThat("Foo|Bar".after("|")).isEqualTo("Bar")
+        assertThat("FooBar".after("|")).isEqualTo("FooBar")
     }
 }

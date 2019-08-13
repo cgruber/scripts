@@ -2,15 +2,21 @@
 
 // Build the dagger example using different versions, via bazelisk.
 
-@file:Include("test_version_utils.kt")
+@file:Include("bazel_compatibility_utils.kt")
 @file:DependsOn("com.beust:jcommander:1.71")
 
+package com.geekinasuit.script.bazel_compatibility
+
+import DependsOn
+import Include
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.Parameter
+import com.geekinasuit.script.bazel_compatibility.utils.*
+import java.io.File
 import kotlin.system.exitProcess
 
 /** Holds the CLI flags */
-object Args {
+object Args : Lifecycle {
     val DEFAULT_VERSIONS = listOf(
         "0.16.0", "0.16.1",
         "0.17.1", "0.17.2",
@@ -24,8 +30,8 @@ object Args {
         "0.25.0", "0.25.1", "0.25.2", "0.25.3",
         "0.26.0", "0.26.1",
         "0.27.0", "0.27.1", "0.27.2",
-        "0.28.0", "0.28.1",
-        "0.29.0rc4"
+        "0.28.0", "0.28.1"
+        //"0.29.0" // soon
     )
     @Parameter(names = ["--help"], help = true, description = "this option")
     var help = false
@@ -34,7 +40,7 @@ object Args {
     var clean = "bazel --bazelrc=/dev/null clean --expunge"
 
     @Parameter(names = ["-t", "--test_command"], description = "Test command to execute")
-    var test = "bazel --bazelrc=/dev/null build //... "
+    var test = "bazel --bazelrc=/dev/null test //..."
 
     @Parameter(names = ["-f", "--file"], description = "Markdown file with the results in a table")
     var outputFile: File = File("matrix.md")
@@ -44,15 +50,20 @@ object Args {
 
     @Parameter(description = "<versions to test>")
     var versions: MutableList<String> = DEFAULT_VERSIONS.toMutableList()
-    fun postParse() {
+
+    override fun postParse() {
         versions.addAll(also)
     }
 }
 
-val jcmd = JCommander.newBuilder().addObject(Args).programName("test_versions").build()
-jcmd.parse(*args)
+val commander = JCommander
+    .newBuilder()
+    .addObject(Args)
+    .programName("test_versions")
+    .build()
+    .parseWithLifecycle(*args)
 if (Args.help) {
-    jcmd.usage()
+    commander.usage()
     println("""
     |    <versions to test>
     |      A set of versions to test.
@@ -66,8 +77,6 @@ println("Clean command: ${Args.clean}")
 println("Test command: ${Args.test}")
 println("Output File: ${Args.outputFile}")
 println("Versions to test: ${Args.versions}")
-
-exitProcess(0)
 
 val VERSION_WIDTH = Args.versions.map(String::length).max() ?: 10
 println("Testing with bazel versions: ${Args.versions.joinToString(" ")}")
@@ -137,7 +146,7 @@ fun format(matrix: Map<String, VerifyResult>): String =
                 }
                 else -> ""
             }
-            "\n    | ${version.pad()} | ${status.pad(6)} | $error |"
+            "\n    | ${version.padEnd(VERSION_WIDTH)} | ${status.padEnd(6)} | $error |"
         }
         .joinToString("")
 println("writing markdown to ${Args.outputFile}")
